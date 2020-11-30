@@ -203,6 +203,7 @@ public class StudentGUI {
         GridPane.setConstraints(button, 2,0);
 
 
+
         gridPane.getChildren().addAll(studentIDLabel,studentIDInput,nameLabel,nameInput,addressLabel,addressInput, cityLabel,cityInput, stateLabel, stateInput, button);
         gridPane.setAlignment(Pos.CENTER);
 
@@ -211,13 +212,20 @@ public class StudentGUI {
                 StudentItemFile studentItemFile = new StudentItemFile("Students.dat");
                 studentItemFile.moveFilePointer(0);
                 final int StudentID = isInt(studentIDInput, studentIDInput.getText());
-                boolean InvalidID = verifyRecordDuplicate(sread, studentItemFile, StudentID);
-                if(!InvalidID){
+                int pointerPosition = verifyRecordExists(sread, studentItemFile, StudentID);
+                if(pointerPosition == -1){
                     throw new InvalidID("Student ID does not exist", "This Student ID does not exist");
                 }
-                studentItemFile.readStudentItemFile();
-                studentItemFile.closeFile();
-                AlertBox.display("Student record added", "The Student record has been added!");
+                studentItemFile.moveFilePointer(pointerPosition);
+                Student student = studentItemFile.readStudentItemFile();
+                nameInput.setText(student.getName());
+                stateInput.setText(student.getState());
+                addressInput.setText(student.getAddress());
+                cityInput.setText(student.getCity());
+
+
+
+
 
 
             }
@@ -288,20 +296,19 @@ public class StudentGUI {
 
     }
 
-    public static boolean verifyRecordExists(Student s, StudentItemFile sf, int studentID) throws IOException{
-        boolean idValid = false;
+    public static int verifyRecordExists(Student s, StudentItemFile sf, int studentID) throws IOException{
+        int filePointer = -1;
         for(int i = 0; i <  sf.getNumberOfRecords(); i++){
             sf.moveFilePointer(i);
             s = sf.readStudentItemFile();
             if(studentID == s.getStudentID()){
-                idValid = true;
-                sf.closeFile();
+                filePointer = i;
                 break;
 
             }
 
         }
-        return  idValid;
+        return  filePointer;
 
     }
 

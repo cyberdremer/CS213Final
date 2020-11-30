@@ -70,6 +70,10 @@ public class Main extends Application  {
         MenuItem ViewCourse = new MenuItem("View Course");
         ViewCourse.setOnAction(e-> {
 
+
+                CourseGUI.ViewCourse();
+
+
         });
         menuCourse.getItems().addAll(AddCourse, EditCourse, ViewCourse);
 
@@ -110,7 +114,7 @@ public class Main extends Application  {
 
         //Reports Menu
         Menu menuReports = new Menu("_Reports");
-        MenuItem studentReports = new MenuItem("StudentGUI Reports");
+        MenuItem studentReports = new MenuItem("Student Reports");
         studentReports.setOnAction(e->{
 
         });
