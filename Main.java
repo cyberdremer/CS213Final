@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.javafx.iio.ios.IosDescriptor;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import java.io.IOException;
 public class Main extends Application  {
 
     Stage window;
+    Scene base;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,55 +28,24 @@ public class Main extends Application  {
         //StudentGUI Menu
         Menu menuStudent = new Menu("_Student");
         MenuItem studentView = new MenuItem("View Student");
-        studentView.setOnAction(e -> {
-            try{
-                StudentGUI.ViewStudents();
-            }
-            catch (IOException e1){
 
-            }
-
-        });
         MenuItem addStudent = new MenuItem("Add Student");
-        addStudent.setOnAction(e-> {
-            try{
-                StudentGUI.AddStudents();
-            }
-            catch (IOException e1){
-                AlertBox.display("IO Error", "IO Error has occurred");
-            }
-        });
-        MenuItem studentEdit = new MenuItem("Edit Student");
-        studentEdit.setOnAction(e-> {
 
-        });
+        MenuItem studentEdit = new MenuItem("Edit Student");
+
         menuStudent.getItems().addAll(addStudent, studentView, studentEdit);
 
 
         //Courses Menu
         Menu menuCourse = new Menu("_Courses");
         MenuItem AddCourse = new MenuItem("Add Course");
-        AddCourse.setOnAction(e-> {
-            try{
-                CourseGUI.AddCourse();
-            }
-            catch (IOException e1){
-                AlertBox.display("IO Error", "IO Error has occurred");
-            }
 
-        });
         MenuItem EditCourse = new MenuItem("Edit Course");
         EditCourse.setOnAction(e-> {
 
         });
         MenuItem ViewCourse = new MenuItem("View Course");
-        ViewCourse.setOnAction(e-> {
 
-
-                CourseGUI.ViewCourse();
-
-
-        });
         menuCourse.getItems().addAll(AddCourse, EditCourse, ViewCourse);
 
 
@@ -120,19 +91,65 @@ public class Main extends Application  {
         });
         menuReports.getItems().add(studentReports);
 
-        HBox center = new HBox();
-        Label l = new Label("Welcome to the University Enrollment App!");
-        center.getChildren().addAll(l);
-        center.setAlignment(Pos.CENTER);
+
+        Label l = new Label("Welcome to the university enrollment app!");
 
         menuBar.getMenus().addAll(menuStudent,menuCourse,menuCourseEnrollment,menuGrades,menuReports);
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(menuBar);
-        borderPane.setCenter(center);
+        borderPane.setCenter(l);
+        base = new Scene(borderPane, 700, 400);
 
 
-        Scene scene = new Scene(borderPane, 500, 300);
-        window.setScene(scene);
+
+        addStudent.setOnAction(e-> {
+            try{
+                borderPane.setCenter(StudentGUI.AddStudents());
+                window.setScene(base);
+            }
+            catch (IOException e1){
+                AlertBox.display("IO Error", "IO Error has occurred");
+            }
+        });
+
+        studentView.setOnAction(e -> {
+            try{
+                borderPane.setCenter(StudentGUI.ViewStudents());
+                window.setScene(base);
+            }
+            catch (IOException e1){
+
+            }
+
+        });
+        studentEdit.setOnAction(e-> {
+            try{
+                borderPane.setCenter(StudentGUI.EditStudents());
+                window.setScene(base);
+            }
+            catch (IOException e1){
+
+            }
+
+        });
+        AddCourse.setOnAction(e-> {
+            try{
+                borderPane.setCenter(CourseGUI.AddCourse());
+                window.setScene(base);
+            }
+            catch (IOException e1){
+                AlertBox.display("IO Error", "IO Error has occurred");
+            }
+
+        });
+        ViewCourse.setOnAction(e-> {
+
+            borderPane.setCenter(CourseGUI.ViewCourse());
+            window.setScene(base);
+
+
+        });
+        window.setScene(base);
         window.show();
         window.setOnCloseRequest(e -> {
             e.consume();
@@ -143,9 +160,6 @@ public class Main extends Application  {
 
 
 
-
-
-        window.show();
 
 
     }

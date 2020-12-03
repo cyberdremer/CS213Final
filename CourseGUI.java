@@ -15,11 +15,9 @@ import java.io.IOException;
 public class CourseGUI {
 
 
-    public static void AddCourse() throws IOException {
+    public static GridPane AddCourse() throws IOException {
         Course cread = new Course();
-        Stage Window = new Stage();
 
-        Window.setTitle("Add Course");
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
@@ -79,9 +77,9 @@ public class CourseGUI {
             try {
                 CourseItemFile ciF = new CourseItemFile("Courses.dat");
                 ciF.moveFilePointer(0);
-                final int courseID = isInt(courseNumberInput, courseNumberInput.getText());
-                isEmpty(courseNumberInput, courseNameInput, instructorInput, departmentInput);
-                boolean InvalidID = verifyRecordDuplicate(cread, ciF, courseID);
+                final int courseID = InputValidation.isInt(courseNumberInput, courseNumberInput.getText());
+                InputValidation.isEmpty(courseNumberInput, courseNameInput, instructorInput, departmentInput);
+                boolean InvalidID = InputValidation.verifyRecordDuplicate(cread, ciF, courseID);
                 if (InvalidID) {
                     throw new InvalidID("Course ID duplicate", "This Course ID already exists!");
                 }
@@ -116,18 +114,12 @@ public class CourseGUI {
         grid.getChildren().addAll( courseIDLabel, courseIDInput, courseNumberLabel, courseNumberInput, courseNameLabel, courseNameInput, instructorLabel, instructorInput, departmentLabel, departmentInput, button);
         grid.setAlignment(Pos.CENTER);
 
-
-        Scene scene = new Scene(grid, 600, 400);
-        Window.setScene(scene);
-        Window.show();
+        return grid;
     }
 
 
-    public static void ViewCourse(){
+    public static GridPane ViewCourse(){
         Course cread = new Course();
-        Stage Window = new Stage();
-
-        Window.setTitle("Add Course");
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
@@ -187,8 +179,8 @@ public class CourseGUI {
             try {
                 CourseItemFile ciF = new CourseItemFile("Courses.dat");
                 ciF.moveFilePointer(0);
-                final int courseID = isInt(courseNumberInput, courseNumberInput.getText());
-                int filePointerPOS = verifyRecordExists(cread, ciF, courseID);
+                final int courseID = InputValidation.isInt(courseNumberInput, courseNumberInput.getText());
+                int filePointerPOS = InputValidation.verifyRecordExists(cread, ciF, courseID);
                 if (filePointerPOS == -1) {
                     throw new InvalidID("Course ID not found!", "This Course ID does not exist!");
                 }
@@ -219,11 +211,7 @@ public class CourseGUI {
 
         grid.getChildren().addAll( courseIDLabel, courseIDInput, courseNumberLabel, courseNumberInput, courseNameLabel, courseNameInput, instructorLabel, instructorInput, departmentLabel, departmentInput, button);
         grid.setAlignment(Pos.CENTER);
-
-
-        Scene scene = new Scene(grid, 600, 400);
-        Window.setScene(scene);
-        Window.show();
+        return grid;
     }
 
 
@@ -233,58 +221,7 @@ public class CourseGUI {
     }
 
 
-    public static void isEmpty(TextField input1, TextField input2, TextField input3, TextField input4) throws EmptyTextField{
-            if(input1.getText().isEmpty() || input2.getText().isEmpty() || input3.getText().isEmpty()
-                    || input4.getText().isEmpty()){
-                throw new EmptyTextField();
 
-            }
-
-        }
-
-
-
-        public static boolean verifyRecordDuplicate(Course s, CourseItemFile sf,  int studentID) throws IOException{
-            boolean idInvalid = false;
-            for(int i = 0; i <  sf.getNumberOfRecords(); i++){
-                sf.moveFilePointer(i);
-                s = sf.readCourseFile();
-                if(studentID == s.getCourseNumber()){
-                    idInvalid = true;
-                    sf.closeFile();
-                    break;
-
-                }
-
-            }
-            return  idInvalid;
-
-        }
-    public static int isInt(TextField input, String message) throws NumberFormatException{
-        int ID = Integer.parseInt(input.getText());
-        return ID;
-
-
-
-    }
-
-
-
-    public static int verifyRecordExists(Course c, CourseItemFile cf, int courseID) throws IOException{
-        int filePointer = -1;
-        for(int i = 0; i <  cf.getNumberOfRecords(); i++){
-            cf.moveFilePointer(i);
-            c = cf.readCourseFile();
-            if(courseID == c.getCourseNumber()){
-                filePointer = i;
-                break;
-
-            }
-
-        }
-        return  filePointer;
-
-    }
 
 
 
