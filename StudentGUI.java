@@ -86,6 +86,9 @@ public class StudentGUI {
                 final int StudentID = InputValidation.isInt(studentIDInput, studentIDInput.getText());
                 InputValidation.isEmpty(studentIDInput,nameInput,addressInput, cityInput,stateInput);
                 boolean InvalidID = InputValidation.verifyRecordDuplicate(sread, studentItemFile, StudentID);
+                if(StudentID < 0){
+                    throw new InvalidID("Invalid ID entry", "You have entered a negative number!");
+                }
                 if(InvalidID){
                     throw new InvalidID("Student ID duplicate", "This student ID already exists!");
                 }
@@ -203,6 +206,13 @@ public class StudentGUI {
                 StudentItemFile studentItemFile = new StudentItemFile("Students.dat");
                 studentItemFile.moveFilePointer(0);
                 final int StudentID = InputValidation.isInt(studentIDInput, studentIDInput.getText());
+                if(StudentID < 0){
+                    nameInput.clear();
+                    stateInput.clear();
+                    addressInput.clear();
+                    cityInput.clear();
+                    throw new InvalidID("Invalid ID entry", "You have entered a negative number!");
+                }
                 int pointerPosition = InputValidation.verifyRecordExists(sread, studentItemFile, StudentID);
                 if(pointerPosition == -1){
                     throw new InvalidID("Student ID does not exist", "This Student ID does not exist");
@@ -330,7 +340,7 @@ public class StudentGUI {
                 studentItemFile.moveFilePointer(0);
                 final int StudentID = InputValidation.isInt(studentIDInput, studentIDInput.getText());
                 int pointerPosition = InputValidation.verifyRecordExists(sread, studentItemFile, StudentID);
-                InputValidation.isEmpty(nameInput,stateInput,addressInput,cityInput);
+
                 if(pointerPosition == -1){
                     throw new InvalidID("Student ID does not exist", "This Student ID does not exist");
                 }
@@ -363,9 +373,7 @@ public class StudentGUI {
             catch (InvalidID e1){
 
             }
-            catch(EmptyTextField e1){
-                
-            }
+
 
 
 
@@ -395,6 +403,7 @@ public class StudentGUI {
                 if(pointerPosition == -1){
                     throw new InvalidID("Student ID does not exist", "This Student ID does not exist");
                 }
+                InputValidation.isEmpty(nameInput,stateInput,addressInput,cityInput);
                 studentItemFile.moveFilePointer(pointerPosition);
                 student  = new Student(StudentID, nameInput.getText(), addressInput.getText(), cityInput.getText(), stateInput.getText());
                 studentItemFile.writeStudentItem(student);
@@ -415,6 +424,9 @@ public class StudentGUI {
             }
 
             catch (InvalidID e1){
+
+            }
+            catch(EmptyTextField e1){
 
             }
 

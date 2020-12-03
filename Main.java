@@ -41,9 +41,7 @@ public class Main extends Application  {
         MenuItem AddCourse = new MenuItem("Add Course");
 
         MenuItem EditCourse = new MenuItem("Edit Course");
-        EditCourse.setOnAction(e-> {
 
-        });
         MenuItem ViewCourse = new MenuItem("View Course");
 
         menuCourse.getItems().addAll(AddCourse, EditCourse, ViewCourse);
@@ -53,9 +51,7 @@ public class Main extends Application  {
         //CourseGUI Enrollment Menu
         Menu menuCourseEnrollment = new Menu("_Enrollment");
         MenuItem addEnrollment = new MenuItem("Add Course Enrollment");
-        addEnrollment.setOnAction(e -> {
 
-        });
         MenuItem editEnrollment = new MenuItem("Edit Course Enrollment");
         editEnrollment.setOnAction(e-> {
 
@@ -147,6 +143,17 @@ public class Main extends Application  {
             borderPane.setCenter(CourseGUI.ViewCourse());
             window.setScene(base);
 
+
+        });
+        EditCourse.setOnAction(e-> {
+            borderPane.setCenter(CourseGUI.EditCourse());
+            window.setScene(base);
+
+        });
+        addEnrollment.setOnAction(e -> {
+
+            borderPane.setCenter(EnrollmentGUI.AddCourseEnrollment());
+            window.setScene(base);
 
         });
         window.setScene(base);

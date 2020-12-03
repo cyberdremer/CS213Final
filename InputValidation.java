@@ -101,6 +101,20 @@ public class InputValidation {
 
     }
 
+    public static boolean ValidateYear(int year ){
+        int length = (int)(Math.log10(year) + 1);
+        boolean validYear = true;
+        if(length > 4  || length < 4){
+            validYear = false;
+
+        }
+        else if(year < 0){
+            validYear = false;
+        }
+
+        return validYear;
+    }
+
 
 
 
