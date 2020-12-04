@@ -156,6 +156,15 @@ public class Main extends Application  {
             window.setScene(base);
 
         });
+        viewEnrollment.setOnAction(e->{
+
+            borderPane.setCenter(EnrollmentGUI.ViewEnrollment());
+            window.setScene(base);
+        });
+        editEnrollment.setOnAction(e->{
+            borderPane.setCenter(EnrollmentGUI.EditEnrollment());
+            window.setScene(base);
+        });
         window.setScene(base);
         window.show();
         window.setOnCloseRequest(e -> {

@@ -1,20 +1,27 @@
 package sample;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EnrollmentGUI {
     public static GridPane AddCourseEnrollment(){
         Student sread = new Student();
         Course cread = new Course();
+        Enrollment eread = new Enrollment();
         ChoiceBox<String> semester = new ChoiceBox<>();
 
         GridPane grid = new GridPane();
@@ -154,20 +161,34 @@ public class EnrollmentGUI {
                 int CourseNum = InputValidation.isInt(courseNumber, courseNumber.getText());
                 int year = InputValidation.isInt(Year, Year.getText());
                 boolean validYear = InputValidation.ValidateYear(year);
+                InputValidation.isEmpty(studentID, studentName, courseNumber, courseID, Year, CourseName);
                 if(!validYear){
                     throw  new InvalidID("Invalid Year", "You have entered an invalid year!");
+                }
+                boolean validEnrollment = InputValidation.verifyRecordDuplicate(eread, ef, year, season, StudentID, CourseNum );
+                if(validEnrollment){
+                    throw new InvalidID("Duplicate Enrollment", "You have entered information for a duplicate enrollment!");
                 }
                 enrollment = new Enrollment(StudentID,CourseNum , year, season, "", courseNumber.getText(), CourseName.getText());
                 ef.moveFilePointer(ef.getNumberOfRecords());
                 ef.writeCourseItem(enrollment);
                 ef.closeFile();
+                AlertBox.display("Enrollment Created", "New Enrollment record added!");
 
-                
+
             }
             catch(IOException e1){
 
             }
             catch(InvalidID e1){
+
+            }
+            catch(EmptyTextField e1){
+                AlertBox.display("Empty textfield", "You have entered an empty input!");
+
+            }
+            catch(NumberFormatException e1){
+                AlertBox.display("Invalid Input", "You have entered invalid input for one or more fields!");
 
             }
 
@@ -200,7 +221,121 @@ public class EnrollmentGUI {
     }
 
 
-    public static void EditCourseEnrollment(){
+    public static BorderPane ViewEnrollment(){
+        TableView<Enrollment> table;
+        BorderPane bp =  new BorderPane();
+        bp.setPadding(new Insets(10,10,10,10));
+
+        //Student ID Column
+        TableColumn<Enrollment, Integer> StudentIDColumn = new TableColumn<>("Student ID");
+        StudentIDColumn.setMinWidth(50);
+        StudentIDColumn.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
+
+        //Course Number Column
+        TableColumn<Enrollment, Integer> CourseNumberColumn = new TableColumn<>("Course Number");
+        CourseNumberColumn.setMinWidth(50);
+        CourseNumberColumn.setCellValueFactory(new PropertyValueFactory<>("CourseID"));
+
+
+        // Year Column
+        TableColumn<Enrollment, Integer> YearColumn = new TableColumn<>("Year");
+        YearColumn.setMinWidth(100);
+        YearColumn.setCellValueFactory(new PropertyValueFactory<>("Year"));
+
+
+        // Semester Column
+        TableColumn<Enrollment, String> SemesterColumn = new TableColumn<>("Semester");
+        SemesterColumn.setMinWidth(100);
+        SemesterColumn.setCellValueFactory(new PropertyValueFactory<>("Semester"));
+
+        TableColumn<Enrollment, String> GradeColumn = new TableColumn<>("Grade");
+        GradeColumn.setMinWidth(50);
+        GradeColumn.setCellValueFactory(new PropertyValueFactory<>("Grade"));
+
+
+        //Course Number Column
+        TableColumn<Enrollment, String> CourseIDColumn = new TableColumn<>("CourseID");
+        CourseIDColumn.setMinWidth(50);
+        CourseIDColumn.setCellValueFactory(new PropertyValueFactory<>("CourseNumber"));
+
+
+        //Course Name Column
+        TableColumn<Enrollment, String> CourseNameColumn = new TableColumn<>("Course Name");
+        CourseNameColumn.setMinWidth(200);
+        CourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
+
+
+        TextField StudentID = new TextField();
+        StudentID.setMaxWidth(90);
+        StudentID.setPromptText("Enter Student ID");
+
+
+
+
+
+
+        table = new TableView<>();
+
+        Button searchStudent = new Button("Search");
+        searchStudent.setOnAction(e-> {
+            try{
+                Student sread = new Student();
+                StudentItemFile sf = new StudentItemFile("Students.dat");
+                int studentIDinput = InputValidation.isInt(StudentID, StudentID.getText());
+                table.setItems(getEnrollment(studentIDinput));
+            }
+            catch(IOException e1){
+                AlertBox.display("IO Error", "An IO error has occurred!");
+            }
+
+
+
+        });
+        table.getColumns().addAll(StudentIDColumn, CourseNumberColumn, YearColumn, SemesterColumn,GradeColumn,CourseIDColumn,CourseNameColumn);
+
+        FlowPane flowPane = new FlowPane();
+        flowPane.setHgap(25);
+        flowPane.setMargin(StudentID, new Insets(20,0,20,20));
+        ObservableList List = flowPane.getChildren();
+        List.addAll(StudentID,searchStudent);
+
+
+        bp.setTop(flowPane);
+        bp.setCenter(table);
+
+
+        return bp;
+
+
+
+    }
+
+
+
+    //Get all enrollments and returns them as viewable lsit
+    private static ObservableList<Enrollment> getEnrollment(int studentID) throws IOException{
+        ObservableList<Enrollment> enrollments = FXCollections.observableArrayList();
+        Enrollment eread = new Enrollment();
+        EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
+        List<Enrollment> enrollments1 = new ArrayList<Enrollment>();
+
+        ef.moveFilePointer(0);
+        for(int i =0; i < ef.getNumberOfRecords(); i++){
+            //Keeps track of the index of enrollments with specifed @params studentID
+            int enrollmentPOS = 0;
+            eread = ef.readCourseEnrollmentFile();
+            if(studentID == eread.getStudentID()){
+                enrollments1.add(eread);
+                enrollments.add(enrollments1.get(enrollmentPOS));
+                enrollmentPOS++;
+            }
+
+
+
+
+        }
+
+        return enrollments;
 
     }
 

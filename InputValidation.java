@@ -63,7 +63,14 @@ public class InputValidation {
 
     }
 
+    public static void isEmpty(TextField input1, TextField input2, TextField input3, TextField input4, TextField input5, TextField input6) throws EmptyTextField{
+        if(input1.getText().isEmpty() || input2.getText().isEmpty() || input3.getText().isEmpty()
+                || input4.getText().isEmpty() || input5.getText().isEmpty() || input6.getText().isEmpty()){
+            throw new EmptyTextField();
 
+        }
+
+    }
 
     public static boolean verifyRecordDuplicate(Course s, CourseItemFile sf,  int studentID) throws IOException{
         boolean idInvalid = false;
@@ -114,6 +121,22 @@ public class InputValidation {
 
         return validYear;
     }
+
+    public static boolean verifyRecordDuplicate(Enrollment enrollment, EnrollmentFile ef, int year, String semester,  int studentID, int courseNumber) throws IOException{
+        boolean duplicateEnrollmentData = false;
+        for(int i = 0; i < ef.getNumberOfRecords(); i++){
+            ef.moveFilePointer(i);
+            enrollment = ef.readCourseEnrollmentFile();
+            if(year == enrollment.getYear() && semester.toUpperCase().equals(enrollment.getSemester().toUpperCase()) && courseNumber == enrollment.getCourseID() && studentID == enrollment.getStudentID()){
+                duplicateEnrollmentData = true;
+            }
+
+        }
+        return  duplicateEnrollmentData;
+    }
+
+
+
 
 
 
