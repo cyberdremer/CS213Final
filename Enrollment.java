@@ -2,7 +2,7 @@ package sample;
 
 public class Enrollment  {
     private int CourseID, StudentID, Year;
-    private String Semester, Grade, CourseNumber, CourseName;
+    private String Semester, Grade, CourseNumber, CourseName, StudentName;
 
     Enrollment(){
         CourseID = 0;
@@ -13,7 +13,7 @@ public class Enrollment  {
 
     }
 
-    Enrollment(int CourseID, int StudentID, int Year, String Semester, String Grade, String CourseNumber, String CourseName){
+    Enrollment(int CourseID, int StudentID, int Year, String Semester, String Grade, String CourseNumber, String CourseName, String StudentName){
         this.CourseID = CourseID;
         this.StudentID = StudentID;
         this.Year = Year;
@@ -21,9 +21,13 @@ public class Enrollment  {
         this.Grade = Grade.toUpperCase();
         this.CourseNumber = CourseNumber.toUpperCase();
         this.CourseName = CourseName;
+        this.StudentName = StudentName;
 
     }
 
+    public void setStudentName(String StudentName){
+        this.StudentName = StudentName;
+    }
     public void setGrade(String Grade){
 
         this.Grade = Grade;
@@ -79,6 +83,9 @@ public class Enrollment  {
     public void setCourseName(String CourseNumber){
 
         this.CourseName = CourseName;
+    }
+    public String getStudentName(){
+        return StudentName;
     }
 
 

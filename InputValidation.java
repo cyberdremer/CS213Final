@@ -1,8 +1,13 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InputValidation {
 
@@ -107,6 +112,21 @@ public class InputValidation {
         return  filePointer;
 
     }
+    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID, int studentID) throws IOException{
+        int filePointer = -1;
+        for(int i = 0; i <  ef.getNumberOfRecords(); i++){
+            ef.moveFilePointer(i);
+            e = ef.readCourseEnrollmentFile();
+            if(courseID == e.getCourseID() && studentID == e.getStudentID()){
+                filePointer = i;
+                break;
+
+            }
+
+        }
+        return  filePointer;
+
+    }
 
     public static boolean ValidateYear(int year ){
         int length = (int)(Math.log10(year) + 1);
@@ -137,6 +157,38 @@ public class InputValidation {
 
 
 
+    public static ObservableList<Enrollment> getEnrollmentByCourse(int courseID) throws IOException{
+        ObservableList<Enrollment> enrollments = FXCollections.observableArrayList();
+        Enrollment eread = new Enrollment();
+        EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
+        List<Enrollment> enrollments1 = new ArrayList<Enrollment>();
+        int enrollmentPOS = 0;
+        ef.moveFilePointer(0);
+        for(int i =0; i < ef.getNumberOfRecords(); i++){
+            //Keeps track of the index of enrollments with specifed @params studentID
+
+            ef.moveFilePointer(i);
+            eread = ef.readCourseEnrollmentFile();
+            if(courseID == eread.getCourseID()){
+                enrollments1.add(eread);
+                enrollments.add(enrollments1.get(enrollmentPOS));
+                enrollmentPOS++;
+            }
+
+
+
+
+        }
+
+        return enrollments;
+
+    }
+
+
+    public static String getChoice(ChoiceBox<String> choiceBox){
+        String semester = choiceBox.getValue();
+        return semester;
+    }
 
 
 

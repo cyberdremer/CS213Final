@@ -153,7 +153,7 @@ public class EnrollmentGUI {
 
         CreateEnrollment.setOnAction(e->{
             try{
-                EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
+                EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
                 ef.moveFilePointer(0);
                 Enrollment enrollment;
                 String season = getChoice(semester);
@@ -169,7 +169,7 @@ public class EnrollmentGUI {
                 if(validEnrollment){
                     throw new InvalidID("Duplicate Enrollment", "You have entered information for a duplicate enrollment!");
                 }
-                enrollment = new Enrollment(StudentID,CourseNum , year, season, "", courseNumber.getText(), CourseName.getText());
+                enrollment = new Enrollment(CourseNum,StudentID , year, season, "", courseID.getText(), CourseName.getText(), studentName.getText());
                 ef.moveFilePointer(ef.getNumberOfRecords());
                 ef.writeCourseItem(enrollment);
                 ef.closeFile();
@@ -226,13 +226,16 @@ public class EnrollmentGUI {
         BorderPane bp =  new BorderPane();
         bp.setPadding(new Insets(10,10,10,10));
 
+        //Student Name Column
+        TableColumn<Enrollment, Integer> StudentName = new TableColumn<>("Student Name");
+        StudentName.setMinWidth(100);
+        StudentName.setCellValueFactory(new PropertyValueFactory<>("StudentName"));
+
         //Student ID Column
-        TableColumn<Enrollment, Integer> StudentIDColumn = new TableColumn<>("Student ID");
-        StudentIDColumn.setMinWidth(50);
-        StudentIDColumn.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
+
 
         //Course Number Column
-        TableColumn<Enrollment, Integer> CourseNumberColumn = new TableColumn<>("Course Number");
+        TableColumn<Enrollment, Integer> CourseNumberColumn = new TableColumn<>("Course #");
         CourseNumberColumn.setMinWidth(50);
         CourseNumberColumn.setCellValueFactory(new PropertyValueFactory<>("CourseID"));
 
@@ -261,7 +264,7 @@ public class EnrollmentGUI {
 
         //Course Name Column
         TableColumn<Enrollment, String> CourseNameColumn = new TableColumn<>("Course Name");
-        CourseNameColumn.setMinWidth(200);
+        CourseNameColumn.setMinWidth(125);
         CourseNameColumn.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
 
 
@@ -291,7 +294,7 @@ public class EnrollmentGUI {
 
 
         });
-        table.getColumns().addAll(StudentIDColumn, CourseNumberColumn, YearColumn, SemesterColumn,GradeColumn,CourseIDColumn,CourseNameColumn);
+        table.getColumns().addAll(StudentName, CourseNameColumn, CourseIDColumn,CourseNumberColumn, SemesterColumn,YearColumn ,GradeColumn);
 
         FlowPane flowPane = new FlowPane();
         flowPane.setHgap(25);
@@ -313,16 +316,17 @@ public class EnrollmentGUI {
 
 
     //Get all enrollments and returns them as viewable lsit
-    private static ObservableList<Enrollment> getEnrollment(int studentID) throws IOException{
+    public static ObservableList<Enrollment> getEnrollment(int studentID) throws IOException{
         ObservableList<Enrollment> enrollments = FXCollections.observableArrayList();
         Enrollment eread = new Enrollment();
-        EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
+        EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
         List<Enrollment> enrollments1 = new ArrayList<Enrollment>();
-
+        int enrollmentPOS = 0;
         ef.moveFilePointer(0);
         for(int i =0; i < ef.getNumberOfRecords(); i++){
             //Keeps track of the index of enrollments with specifed @params studentID
-            int enrollmentPOS = 0;
+
+            ef.moveFilePointer(i);
             eread = ef.readCourseEnrollmentFile();
             if(studentID == eread.getStudentID()){
                 enrollments1.add(eread);

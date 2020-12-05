@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 
 public class EnrollmentFile {
     private RandomAccessFile courseEnrollmentFile;
-    private long RECORD_SIZE = 212;
+    private long RECORD_SIZE = 262;
 
     EnrollmentFile(String filename) throws IOException {
         courseEnrollmentFile = new RandomAccessFile(filename, "rw");
@@ -18,7 +18,8 @@ public class EnrollmentFile {
         String str2 = ce.getGrade();
         String str3 = ce.getCourseNumber();
         String str4 = ce.getCourseName();
-        String[] courseInformation = {str,str2,str3, str4};
+        String str5 = ce.getStudentName();
+        String[] courseInformation = {str,str2,str3, str4, str5};
 
 
         for(int i = 0; i < courseInformation.length; i++){
@@ -52,10 +53,12 @@ public class EnrollmentFile {
         String courseNumber1 = courseNumber.trim();
         String courseName = readCourseEnrollmentFileLoop();
         String courseName1 = courseName.trim();
+        String studentName = readCourseEnrollmentFileLoop();
+        String studentname1 = studentName.trim();
         int year = courseEnrollmentFile.readInt();
         int cID = courseEnrollmentFile.readInt();
         int sID = courseEnrollmentFile.readInt();
-        Enrollment ce =new Enrollment(cID, sID,year,semester,grade, courseNumber1, courseName1);
+        Enrollment ce =new Enrollment(cID, sID,year,semester,grade, courseNumber1, courseName1, studentname1);
         return ce;
     }
 

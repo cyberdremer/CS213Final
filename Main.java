@@ -39,11 +39,8 @@ public class Main extends Application  {
         //Courses Menu
         Menu menuCourse = new Menu("_Courses");
         MenuItem AddCourse = new MenuItem("Add Course");
-
         MenuItem EditCourse = new MenuItem("Edit Course");
-
         MenuItem ViewCourse = new MenuItem("View Course");
-
         menuCourse.getItems().addAll(AddCourse, EditCourse, ViewCourse);
 
 
@@ -51,32 +48,15 @@ public class Main extends Application  {
         //CourseGUI Enrollment Menu
         Menu menuCourseEnrollment = new Menu("_Enrollment");
         MenuItem addEnrollment = new MenuItem("Add Course Enrollment");
-
         MenuItem editEnrollment = new MenuItem("Edit Course Enrollment");
-        editEnrollment.setOnAction(e-> {
-
-        });
         MenuItem viewEnrollment = new MenuItem("View Course Enrollment");
-        viewEnrollment.setOnAction(e-> {
-
-        });
         menuCourseEnrollment.getItems().addAll(addEnrollment,editEnrollment,viewEnrollment);
 
         //Grades Menu
         Menu menuGrades = new Menu("_Grades");
-        MenuItem viewGrade = new MenuItem("View Grades");
-        viewGrade.setOnAction(e-> {
-
-        });
-        MenuItem addGrade = new MenuItem("Add Grade");
-        addGrade.setOnAction(e-> {
-
-        });
-        MenuItem editGrade = new MenuItem("Edit Grade");
-        editGrade.setOnAction(e-> {
-
-        });
-        menuGrades.getItems().addAll(addGrade,editGrade,viewGrade);
+        MenuItem addGradeByStudent = new MenuItem("View/Edit Grade by Student");
+        MenuItem addGradeByCourse = new MenuItem("View/Edit Grade by Course");
+        menuGrades.getItems().addAll(addGradeByStudent, addGradeByCourse );
 
 
         //Reports Menu
@@ -162,7 +142,14 @@ public class Main extends Application  {
             window.setScene(base);
         });
         editEnrollment.setOnAction(e->{
-            borderPane.setCenter(EnrollmentGUI.EditEnrollment());
+
+        });
+        addGradeByStudent.setOnAction(e->{
+            borderPane.setCenter(GradesGUI.viewGradesStudent());
+            window.setScene(base);
+        });
+        addGradeByCourse.setOnAction(e->{
+            borderPane.setCenter(GradesGUI.viewGradesCourse());
             window.setScene(base);
         });
         window.setScene(base);
