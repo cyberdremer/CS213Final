@@ -62,13 +62,11 @@ public class Main extends Application  {
         //Reports Menu
         Menu menuReports = new Menu("_Reports");
         MenuItem studentReports = new MenuItem("Student Reports");
-        studentReports.setOnAction(e->{
 
-        });
         menuReports.getItems().add(studentReports);
 
 
-        Label l = new Label("Welcome to the university enrollment app!");
+        Label l = new Label("Welcome to the University enrollment app!");
 
         menuBar.getMenus().addAll(menuStudent,menuCourse,menuCourseEnrollment,menuGrades,menuReports);
         BorderPane borderPane = new BorderPane();
@@ -151,6 +149,11 @@ public class Main extends Application  {
         addGradeByCourse.setOnAction(e->{
             borderPane.setCenter(GradesGUI.viewGradesCourse());
             window.setScene(base);
+        });
+        studentReports.setOnAction(e->{
+            borderPane.setCenter(ReportGUI.viewReports());
+            window.setScene(base);
+
         });
         window.setScene(base);
         window.show();

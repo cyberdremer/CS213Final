@@ -128,6 +128,22 @@ public class InputValidation {
 
     }
 
+    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID) throws IOException{
+        int filePointer = -1;
+        for(int i = 0; i <  ef.getNumberOfRecords(); i++){
+            ef.moveFilePointer(i);
+            e = ef.readCourseEnrollmentFile();
+            if(courseID == e.getCourseID()){
+                filePointer = i;
+                break;
+
+            }
+
+        }
+        return  filePointer;
+
+    }
+
     public static boolean ValidateYear(int year ){
         int length = (int)(Math.log10(year) + 1);
         boolean validYear = true;
