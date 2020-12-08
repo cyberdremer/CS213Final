@@ -127,7 +127,7 @@ public class GradesGUI {
 
         editGrade.setOnAction(e->{
             try{
-                EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
+                EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
                 Enrollment enrollment = new Enrollment();
                 String letterGrade = InputValidation.getChoice(grade);
                 int sID = InputValidation.isInt(StudentID,StudentID.getText());
@@ -285,7 +285,7 @@ public class GradesGUI {
 
         editGrade.setOnAction(e->{
             try{
-                EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
+                EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
                 Enrollment enrollment = new Enrollment();
                 String letterGrade = InputValidation.getChoice(grade);
                 int sID = InputValidation.isInt(studentIDNumberInput,studentIDNumberInput.getText());

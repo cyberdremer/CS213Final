@@ -112,12 +112,14 @@ public class InputValidation {
         return  filePointer;
 
     }
-    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID, int studentID) throws IOException{
+
+
+    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID) throws IOException{
         int filePointer = -1;
         for(int i = 0; i <  ef.getNumberOfRecords(); i++){
             ef.moveFilePointer(i);
             e = ef.readCourseEnrollmentFile();
-            if(courseID == e.getCourseID() && studentID == e.getStudentID()){
+            if(courseID == e.getCourseID()){
                 filePointer = i;
                 break;
 
@@ -127,13 +129,12 @@ public class InputValidation {
         return  filePointer;
 
     }
-
-    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID) throws IOException{
+    public static int verifyRecordExists(Enrollment e, EnrollmentFile ef, int courseID, int studentID) throws IOException{
         int filePointer = -1;
         for(int i = 0; i <  ef.getNumberOfRecords(); i++){
             ef.moveFilePointer(i);
             e = ef.readCourseEnrollmentFile();
-            if(courseID == e.getCourseID()){
+            if(courseID == e.getCourseID() && studentID == e.getStudentID()){
                 filePointer = i;
                 break;
 
@@ -173,10 +174,25 @@ public class InputValidation {
 
 
 
+    public static boolean verifyRecordDuplicate(Enrollment enrollment, EnrollmentFile ef, int studentID, int courseNumber) throws IOException{
+        boolean duplicateEnrollmentData = false;
+        for(int i = 0; i < ef.getNumberOfRecords(); i++){
+            ef.moveFilePointer(i);
+            enrollment = ef.readCourseEnrollmentFile();
+            if( courseNumber == enrollment.getCourseID() && studentID == enrollment.getStudentID()){
+                duplicateEnrollmentData = true;
+            }
+
+        }
+        return  duplicateEnrollmentData;
+    }
+
+
+
     public static ObservableList<Enrollment> getEnrollmentByCourse(int courseID) throws IOException{
         ObservableList<Enrollment> enrollments = FXCollections.observableArrayList();
         Enrollment eread = new Enrollment();
-        EnrollmentFile ef = new EnrollmentFile("Enrollments.txt");
+        EnrollmentFile ef = new EnrollmentFile("Enrollments.dat");
         List<Enrollment> enrollments1 = new ArrayList<Enrollment>();
         int enrollmentPOS = 0;
         ef.moveFilePointer(0);

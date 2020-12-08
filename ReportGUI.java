@@ -63,7 +63,7 @@ public class ReportGUI {
 
         generateReport.setOnAction(e->{
             try{
-                EnrollmentFile eFile = new EnrollmentFile("Enrollments.txt");
+                EnrollmentFile eFile = new EnrollmentFile("Enrollments.dat");
                 Enrollment eread = new Enrollment();
 
 

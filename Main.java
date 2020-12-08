@@ -140,6 +140,8 @@ public class Main extends Application  {
             window.setScene(base);
         });
         editEnrollment.setOnAction(e->{
+            borderPane.setCenter(EnrollmentGUI.EditCourseEnrollment());
+            window.setScene(base);
 
         });
         addGradeByStudent.setOnAction(e->{
